@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Alert, StyleSheet, FlatList, Image } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SignOut } from '../hooks/useAuth'
 import { useNavigation } from '@react-navigation/native'
@@ -34,6 +34,27 @@ const sampleData = [
 ];
 
 export default function HomeScreen() {
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetch('http://10.0.2.2:4000/api/attractions')
+      .then(res => res.json())
+      .then((result) => {
+        console.log(result)
+        
+      },
+      (error) => {
+        console.log(error)
+      }
+      )
+  }, [])
+
+  /*items.forEach((massage) => {
+    console.log(items)
+  })*/
+
   const navigation = useNavigation();
   const handleLogout = () => {
     SignOut(success, unsuccess);

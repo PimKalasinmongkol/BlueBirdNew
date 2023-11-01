@@ -34,11 +34,11 @@ export default function EditScreen() {
             </View>
 
 
-            <View style={{ flex: 10, marginLeft: 90, marginRight: 90, justifyContent: "center" }}>
+            <View style={{ flex: 10, marginLeft:"10%", marginRight: "10%" ,justifyContent:"center"  }}>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <View style={{flexDirection:"row",alignItems:"center"}}>
                         <Image source={require('../assets/pim.jpg')}
-                            style={{ width: 200, height: 200, borderRadius: 100 }} />
+                            style={{ width: 150, height: 150, borderRadius: 100 }} />
                         <TouchableOpacity style={{ backgroundColor: "#00A6FF", padding: 10, margin: 10, borderRadius: 10, width: 100, alignItems: "center", marginLeft:80 }}>
                             <Text style={{ fontWeight: "bold", fontSize: 16 }}>Upload</Text>
                         </TouchableOpacity>
@@ -120,11 +120,11 @@ const styles = StyleSheet.create({
     },
     textinp: {
         backgroundColor: "#C7C7C7",
-        width: 400,
+        width: 200,
         borderRadius: 5,
-        padding: 20,
+        padding: 10,
         marginBottom: 20,
-        fontSize: 16
+        fontSize: 15
     }
 
 });
