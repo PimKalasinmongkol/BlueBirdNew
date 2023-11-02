@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, Alert  } from 'react-native'
-import React,{useState} from 'react'
+import { View, Text, Image, TouchableOpacity, TextInput, StyleSheet, Alert } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { themeColors } from '../theme'
 import { useNavigation } from '@react-navigation/native'
@@ -11,7 +11,7 @@ export default function ForgotPassScreen() {
     const [email, setEmail] = useState('');
 
     const handleSubmit = () => {
-        ForgotPass(email,success,unsuccess)
+        ForgotPass(email, success, unsuccess)
     };
 
     const success = (msg) => {
@@ -26,23 +26,23 @@ export default function ForgotPassScreen() {
 
     return (
         <SafeAreaView style={{ backgroundColor: themeColors.bg, flex: 5 }}>
-            <View style={{ justifyContent: 'space-around', flex: 2 }}>
+            <View style={{ justifyContent: 'space-around', flex: 2, }}>
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={{ backgroundColor: "#F1C40F", padding: 5, borderTopRightRadius: 16, borderBottomLeftRadius: 16, marginLeft: 16 }}
                         onPress={() => navigation.goBack()}>
                         <ArrowLeftIcon size="20" color="black" />
                     </TouchableOpacity>
                 </View>
-                <Text style={{ color: "#373737", fontWeight: "bold", textAlign: 'center', fontSize: 20 }}>
+                <Text style={{ color: "#373737", fontWeight: "bold", textAlign: 'center', fontSize: 20,marginTop:30 }}>
                     Welcome to Recover password by email
                 </Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'center' }}>
                     <Image source={require("../assets/images/welcome.png")}
-                        style={{ width: 300, height: 300 }} />
+                        style={{ width: 250, height: 250 }} />
                 </View>
 
             </View>
-            <View style={{ flex: 3, marginLeft: "20%", marginRight: "20%" }}>
+            <View style={{ flex: 3, marginLeft: "20%", marginRight: "20%",paddingTop:20 }}>
                 <Text style={{ fontWeight: "bold", fontSize: 18 }}>Email</Text>
                 <TextInput style={styles.textinp}
                     value={email}
@@ -51,12 +51,10 @@ export default function ForgotPassScreen() {
                 />
                 <View style={{ alignItems: "flex-end" }}>
                     <TouchableOpacity style={{ backgroundColor: "#F1C40F", padding: 12, borderRadius: 20 }}
-                    onPress={handleSubmit}>
+                        onPress={handleSubmit}>
                         <Text style={{ fontWeight: "bold", fontSize: 16 }}>Submit</Text>
                     </TouchableOpacity>
                 </View>
-
-
             </View>
         </SafeAreaView>
     )

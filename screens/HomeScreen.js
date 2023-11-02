@@ -2,60 +2,49 @@ import { View, Text, TouchableOpacity, Alert, StyleSheet, FlatList, Image } from
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { SignOut } from '../hooks/useAuth'
+import { AntDesign } from '@expo/vector-icons';
+import { Card, Title, Paragraph, Divider, Searchbar, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-const sampleData = [
-  {
-    id: '1',
-    username: 'user1',
-    image: 'https://via.placeholder.com/150',
-    caption: 'This is a sample caption',
-    likes: 10,
-  },
-  {
-    id: '2',
-    username: 'user2',
-    image: 'https://via.placeholder.com/150',
-    caption: 'Another sample caption',
-    likes: 20,
-  },
-  {
-    id: '3',
-    username: 'user3',
-    image: 'https://via.placeholder.com/150',
-    caption: 'Another sample caption',
-    likes: 20,
-  },
-  // Add more sample posts as needed
-];
-
 export default function HomeScreen() {
+
+  const navigation = useNavigation();
+  const [items, setItems] = useState([])
+  const [isLoaded, setIsLoaded] = useState(true)
   const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+
+  const [countLiked, setCountLiked] = React.useState(0);
+  const [comment, setcomment] = React.useState(false);
+  const [countComment, setCountComment] = React.useState(0);
+
+  function handleLiked() {
+    setCountLiked(countLiked + 1);
+  }
+  function handleComment() {
+    setcomment(!comment)
+    setCountComment(countComment + 1);
+  }
 
   useEffect(() => {
-    fetch('http://10.0.2.2:4000/api/attractions')
+
+    fetch("http://192.168.87.170:4000/getPostWithUserId")
+
       .then(res => res.json())
       .then((result) => {
-        console.log(result)
-        
+        setIsLoaded(true);
+        setItems(result);
       },
-      (error) => {
-        console.log(error)
-      }
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
       )
   }, [])
 
-  /*items.forEach((massage) => {
-    console.log(items)
-  })*/
-
-  const navigation = useNavigation();
   const handleLogout = () => {
     SignOut(success, unsuccess);
   };
@@ -71,12 +60,35 @@ export default function HomeScreen() {
   }
 
   const renderPost = ({ item }) => (
-    <View style={styles.postContainer}>
-      <Text style={styles.username}>{item.username}</Text>
-      <Image source={{ uri: item.image }} style={styles.postImage} />
-      <Text style={styles.caption}>{item.caption}</Text>
-      <Text style={styles.likes}>{`${item.likes} likes`}</Text>
-    </View>
+    <Card style={{ paddingLeft: "5%", paddingRight: "5%", paddingTop: "5%", paddingBottom: "5%" }}>
+      <Card.Title style={{ fontSize: 20 }}
+        title={item.name}
+        subtitle={item.post_date}
+        left={() => {
+          return (
+            <Avatar.Image source={{ uri: item.photoURL }} size={50} />
+          )
+        }} />
+      <Card.Content>
+        <Title>{item.post_title}</Title>
+      </Card.Content>
+      <View style={{ flexDirection: "row", paddingTop: "2%" }}>
+        {item.post_img.length > 0 ?
+          <Card.Cover
+            source={{ uri: item.post_img }}
+            style={{ width: "100%", height: 500 }} />
+          : <View></View>}
+        <View></View>
+      </View>
+      <Card.Actions>
+          <View style={{flexDirection: 'row' }}>
+            <TouchableOpacity>
+              <AntDesign name="like1" size={24} color="black" />
+            </TouchableOpacity>
+            <View><Text style={{fontSize:16}}>Like</Text></View>
+          </View>
+        </Card.Actions>
+    </Card>
   );
 
   return (
@@ -92,7 +104,7 @@ export default function HomeScreen() {
 
       <View style={{ flex: 10 }}>
         <FlatList
-          data={sampleData}
+          data={items}
           renderItem={renderPost}
           keyExtractor={item => item.id}
         />
@@ -153,7 +165,7 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: '100%',
-    height: 200,
+    height: 500,
     resizeMode: 'cover',
   },
   caption: {
