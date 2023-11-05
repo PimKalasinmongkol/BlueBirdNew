@@ -19,7 +19,6 @@ export default function App() {
         <AppNavigation />
       </NavigationContainer>
     </SafeAreaProvider>
-
   );
 }
 

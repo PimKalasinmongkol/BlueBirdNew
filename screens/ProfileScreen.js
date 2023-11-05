@@ -6,9 +6,14 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { themeColors } from '../theme'
 import { SignOut } from '../hooks/useAuth'
+import { useEffect, useState } from 'react'
+import { Card, Title } from 'react-native-paper';
 
 
 export default function ProfileScreen() {
+    const [name ,setName] = useState(null);
+    const [userImg ,setUserImg] = useState('');
+    const [items ,setItems] = useState([]);
     const navigation = useNavigation();
     const handleLogout = () => {
         SignOut(success, unsuccess);
@@ -23,6 +28,55 @@ export default function ProfileScreen() {
         console.log(msg)
         Alert.alert(msg)
     }
+
+    const fetchUserData = async () => {
+        const response = await fetch(
+          `http://192.168.94.10:4000/getEditWithUserId`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        setName(data[0].name);
+        setUserImg(data[0].photoURL);
+    }
+
+    const fetchUserPost = async () => {
+        const response = await fetch(
+          `http://192.168.94.10:4000/getPostsByUser`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        setItems(data);
+    }
+
+
+    useEffect(() => {
+        fetchUserData()
+        fetchUserPost()
+    },[])
+
+    const renderPost = ({ item }) => (
+        <Card style={{ width: '33%', padding: 4 ,marginHorizontal: 6 }}> 
+            <Card.Cover
+                source={{ uri: item.post_img }}
+                style={{ aspectRatio: 1 }}
+                resizeMode="cover"
+            />
+            <Text style={{textAlign:'center',marginVertical: 10,fontSize: 15 ,fontWeight: 600}}>{item.post_title}</Text>
+        </Card>
+    );
+    
+    
+
     return (
         <SafeAreaView style={{ flex: 12, backgroundColor: themeColors.bg }}>
             <View style={styles.navBar}>
@@ -36,9 +90,9 @@ export default function ProfileScreen() {
 
             <View style={{ flex: 10 }}>
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <Image source={require('../assets/pim.jpg')}
+                    <Image source={{uri : userImg}}
                         style={{ width: 150, height: 150, borderRadius: 100 }} />
-                    <Text style={{ fontWeight: "bold", padding: 20, fontSize: 20 }}>Pim Kalasinmongkol</Text>
+                    <Text style={{ fontWeight: "bold", padding: 20, fontSize: 20 }}>{name}</Text>
                     <TouchableOpacity style={{flexDirection:'row',backgroundColor:"#F1C40F",padding:5,borderRadius:10,}}
                         onPress={() => navigation.navigate('Edit')}>
                         <Text style={{fontSize:15}}>Edit </Text>
@@ -48,7 +102,13 @@ export default function ProfileScreen() {
 
                 </View>
                 <View style={{ flex: 1, justifyContent: "center" }}>
-
+                <FlatList 
+                    data={items}
+                    renderItem={renderPost}
+                    keyExtractor={(item) => item.post_id}
+                    numColumns={3}
+                    columnWrapperStyle={{ justifyContent: 'flex-start' }}
+                />
                 </View>
             </View>
 
