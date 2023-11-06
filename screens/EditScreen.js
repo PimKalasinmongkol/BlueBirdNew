@@ -86,8 +86,8 @@ export default function EditScreen() {
         );
         const data = await response.json();
         updateEmailAndPassword(email, password, success, unsuccess);
-        Alert.alert(data.msg);
         setIsEdited(!isEdited);
+        Alert.alert("Update data successfully");
     } catch (error) {
         console.error('Error send edit data:', error);
     }

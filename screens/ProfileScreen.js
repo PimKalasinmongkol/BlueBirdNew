@@ -34,9 +34,6 @@ export default function ProfileScreen() {
           `http://192.168.94.10:4000/getEditWithUserId`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
           }
         );
         const data = await response.json();
@@ -49,20 +46,16 @@ export default function ProfileScreen() {
           `http://192.168.94.10:4000/getPostsByUser`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
           }
         );
         const data = await response.json();
         setItems(data);
     }
 
-
     useEffect(() => {
         fetchUserData()
         fetchUserPost()
-    },[])
+    }, [])
 
     const renderPost = ({ item }) => (
         <Card style={{ width: '33%', padding: 4 ,marginHorizontal: 6 }}> 
