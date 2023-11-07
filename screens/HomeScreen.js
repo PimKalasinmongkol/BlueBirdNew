@@ -38,15 +38,17 @@ export default function HomeScreen() {
   const [allLike, setAllLike] = useState([]);
   const [allComment, setAllComment] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
-  const [comment ,setComment] = useState("");
+  const [comment, setComment] = useState("");
 
   const getSession = async () => {
-    const response = await fetch("http://192.168.94.10:4000/getEditWithUserId", {
-      method: "GET",
-    });
+    const response = await fetch(
+      "http://192.168.94.10:4000/getEditWithUserId",
+      {
+        method: "GET",
+      }
+    );
     const data = await response.json();
     setUserId(data[0]);
-    console.log("user id", userId.id);
   };
 
   const fetchPost = async () => {
@@ -71,11 +73,8 @@ export default function HomeScreen() {
       method: "GET",
     });
     const data = await response.json(); //lost data
-    setAllComment(data)
-    allComment.map((item) => {
-      console.log(item);
-    })
-  }
+    setAllComment(data);
+  };
 
   const handleUserLiked = async (user_id, post_id) => {
     const isUserLikedPost = allLike.find((like) => {
@@ -117,9 +116,9 @@ export default function HomeScreen() {
     }
   };
 
-  const handleComment = async (user_id ,post_id ,comment_content) => {
+  const handleComment = async (user_id, post_id, comment_content) => {
     if (comment_content.length === 0) {
-      Alert.alert('Please enter your comment');
+      Alert.alert("Please enter your comment");
       return;
     }
     try {
@@ -138,14 +137,14 @@ export default function HomeScreen() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchPost();
     fetchLike();
     fetchComment();
     getSession();
-  }, [isLiked ,comment]);
+  }, [isLiked, comment]);
 
   const handleLogout = () => {
     SignOut(success, unsuccess);
@@ -168,86 +167,96 @@ export default function HomeScreen() {
       if (like.post_id === item.post_id) {
         countLike++;
       }
-    })
+    });
     allComment.map((comment) => {
       if (comment.post_id === item.post_id) {
         countComment++;
       }
-    })
+    });
     return (
-      <Card
-        style={{
-          paddingLeft: "5%",
-          paddingRight: "5%",
-          paddingTop: "5%",
-          paddingBottom: "5%",
-        }}
-        key={item.post_id}
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("FullPost", {
+            postId: item.post_id,
+            userId: userId.id
+          })
+        }
       >
-        <Card.Title
-          style={{ fontSize: 20 }}
-          title={item.name}
-          subtitle={item.post_date}
-          left={() => {
-            return <Avatar.Image source={{ uri: item.photoURL }} size={50} />;
+        <Card
+          style={{
+            paddingLeft: "5%",
+            paddingRight: "5%",
+            paddingTop: "5%",
+            paddingBottom: "5%",
           }}
-        />
-        <Card.Content>
-          <Title>{item.post_title}</Title>
-        </Card.Content>
-        <View style={{ flexDirection: "row", paddingTop: "2%" }}>
-          {item.post_img.length > 0 ? (
-            <Card.Cover
-              source={{ uri: item.post_img }}
-              style={{ width: "100%", height: 500 }}
-              key={item.post_img}
-            />
-          ) : (
+          key={item.post_id}
+        >
+          <Card.Title
+            style={{ fontSize: 20 }}
+            title={item.name}
+            subtitle={item.post_date}
+            left={() => {
+              return <Avatar.Image source={{ uri: item.photoURL }} size={50} />;
+            }}
+          />
+          <Card.Content>
+            <Title>{item.post_title}</Title>
+          </Card.Content>
+          <View style={{ flexDirection: "row", paddingTop: "2%" }}>
+            {item.post_img.length > 0 ? (
+              <Card.Cover
+                source={{ uri: item.post_img }}
+                style={{ width: "100%", height: 500 }}
+                key={item.post_img}
+              />
+            ) : (
+              <View></View>
+            )}
             <View></View>
-          )}
-          <View></View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 15,
-            justifyContent: 'flex-start'
-          }}
-        >
-          <View style={{ flexDirection: "row", paddingHorizontal: 10}}>
-            <TouchableOpacity
-              style={{ paddingHorizontal: 10 }}
-              onPress={() => handleUserLiked(userId.id, item.post_id)}
-            >
-              <AntDesign name="like1" size={24} color="black" />
-            </TouchableOpacity>
-            <View>
-              <Text style={{ fontSize: 16 }}>{countLike}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 15,
+              justifyContent: "flex-start",
+            }}
+          >
+            <View style={{ flexDirection: "row", paddingHorizontal: 10 }}>
+              <TouchableOpacity
+                style={{ paddingHorizontal: 10 }}
+                onPress={() => handleUserLiked(userId.id, item.post_id)}
+              >
+                <AntDesign name="like1" size={24} color="black" />
+              </TouchableOpacity>
+              <View>
+                <Text style={{ fontSize: 16 }}>{countLike}</Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: "row", paddingHorizontal: 10 }}>
+              <TouchableOpacity style={{ paddingHorizontal: 10 }}>
+                <Ionicons name="chatbubble-ellipses" size={24} color="black" />
+              </TouchableOpacity>
+              <View>
+                <Text style={{ fontSize: 16 }}>{countComment}</Text>
+              </View>
             </View>
           </View>
-          <View style={{ flexDirection: "row", paddingHorizontal: 10}}>
-            <TouchableOpacity style={{ paddingHorizontal: 10 }}>
-              <Ionicons name="chatbubble-ellipses" size={24} color="black" />
-            </TouchableOpacity>
-            <View>
-              <Text style={{ fontSize: 16 }}>{countComment}</Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "500px"
-          }}
-        >
-          {
-            allComment.map((comment) => {
-              if (comment.post_id === item.post_id) {
-                return (
-                  <View style={{
+          <View
+            style={{
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              overflow: "scroll",
+            }}
+          >
+            {allComment
+              .filter((comment) => comment.post_id === item.post_id)
+              .slice(-1)
+              .map((comment, index) => (
+                <View
+                  key={index}
+                  style={{
                     borderRadius: 10,
                     marginVertical: 10,
                     width: "100%",
@@ -255,60 +264,67 @@ export default function HomeScreen() {
                     paddingLeft: 10,
                     borderBottomWidth: 1,
                     borderBottomColor: "#eaeaea",
-                  }}>
-                    <Text style={{
-                      textAlign:'left',
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "left",
                       fontSize: 19,
-                      fontWeight: 800,
-                    }}>{comment.name}</Text>
-                    <Text style={{
-                      textAlign:'left',
+                      fontWeight: "bold", // Adjusted for React Native
+                    }}
+                  >
+                    {comment.name}
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "left",
                       fontSize: 17,
-                      fontWeight: 500,
-                    }}>{comment.comment_content}</Text>
-                  </View>
-                )
-              }
-            })
-          }
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            marginVertical: 10,
-          }}
-        >
-          <TextInput
+                      fontWeight: "normal", // Adjusted for React Native
+                    }}
+                  >
+                    {comment.comment_content}
+                  </Text>
+                </View>
+              ))}
+          </View>
+          <View
             style={{
-              fontSize: 20,
-              fontWeight: "bold",
-              width: "90%",
-              height: 50,
-              borderBottomColor: "#333",
-              borderBottomWidth: 1,
-              paddingHorizontal: 10,
-              paddingVertical: 10,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginVertical: 10,
             }}
-            onChangeText={(value) => setComment(value)}
-          />
-          <TouchableOpacity
-            style={{
-              padding: 10,
-              borderRadius: 50,
-              borderWidth: 1,
-              borderBlockColor: "#333",
-              backgroundColor: "#333",
-              marginLeft: 15,
-            }}
-            onPress={() => handleComment(userId.id, item.post_id, comment)}
           >
-            <Ionicons name="send" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-      </Card>
+            <TextInput
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                width: "90%",
+                height: 50,
+                borderBottomColor: "#333",
+                borderBottomWidth: 1,
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+              }}
+              onChangeText={(value) => setComment(value)}
+            />
+            <TouchableOpacity
+              style={{
+                padding: 10,
+                borderRadius: 50,
+                borderWidth: 1,
+                borderBlockColor: "#333",
+                backgroundColor: "#333",
+                marginLeft: 15,
+              }}
+              onPress={() => handleComment(userId.id, item.post_id, comment)}
+            >
+              <Ionicons name="send" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+        </Card>
+      </TouchableOpacity>
     );
   };
 

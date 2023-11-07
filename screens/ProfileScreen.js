@@ -12,6 +12,7 @@ import { Card, Title } from 'react-native-paper';
 
 export default function ProfileScreen() {
     const [name ,setName] = useState(null);
+    const [userId,setUserId] = useState(null);
     const [userImg ,setUserImg] = useState('');
     const [items ,setItems] = useState([]);
     const navigation = useNavigation();
@@ -39,6 +40,7 @@ export default function ProfileScreen() {
         const data = await response.json();
         setName(data[0].name);
         setUserImg(data[0].photoURL);
+        setUserId(data[0].id);
     }
 
     const fetchUserPost = async () => {
@@ -58,14 +60,23 @@ export default function ProfileScreen() {
     }, [])
 
     const renderPost = ({ item }) => (
-        <Card style={{ width: '33%', padding: 4 ,marginHorizontal: 6 }}> 
-            <Card.Cover
-                source={{ uri: item.post_img }}
-                style={{ aspectRatio: 1 }}
-                resizeMode="cover"
-            />
-            <Text style={{textAlign:'center',marginVertical: 10,fontSize: 15 ,fontWeight: 600}}>{item.post_title}</Text>
-        </Card>
+        <TouchableOpacity
+            onPress={() =>
+            navigation.navigate("FullPost", {
+                postId: item.post_id,
+                userId: userId
+            })
+            }
+        >
+            <Card style={{ width: '100%',marginRight: 10 }}> 
+                <Card.Cover
+                    source={{ uri: item.post_img }}
+                    style={{ aspectRatio: 1 ,justifyContent: 'center' ,alignSelf: 'center' }}
+                    resizeMode="cover"
+                />
+                <Text style={{textAlign:'center',marginVertical: 10,fontSize: 15 ,fontWeight: 600}}>{item.post_title}</Text>
+            </Card>
+        </TouchableOpacity>
     );
     
     

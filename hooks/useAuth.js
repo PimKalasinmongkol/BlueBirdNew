@@ -22,6 +22,7 @@ export const SignUp = (account, success, unsuccess) => {
         .post("http://192.168.94.10:4000/createAccount", {
           email: account.email,
           password: account.password,
+
           name: account.name,
         })
         .catch((err) => {
