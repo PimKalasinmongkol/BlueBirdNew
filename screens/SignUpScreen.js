@@ -14,17 +14,26 @@ export default function SignUpScreen() {
     const [password, setPassword] = useState('');
 
     const handleSignUp = () => {
-        const account = {
-            name: name,
-            email: email,
-            password: password
+        if (name === '' || email === '' || password === '') {
+            if (email === '') {
+                Alert.alert('Please enter your email')
+            } else if (password === '') {
+                Alert.alert('Please enter your password')
+            } else if (name === '') {
+                Alert.alert('Please enter your name')
+            }
+        } else {
+            const account = {
+                name: name,
+                email: email,
+                password: password
+            }
+            SignUp(account,success,unsuccess)
         }
-        SignUp(account,success,unsuccess)
     };
 
     const success = (msg) => {
         Alert.alert(` ${msg} `)
-        navigation.push('Home')
       }
 
     const unsuccess = (msg) => {
@@ -77,20 +86,6 @@ export default function SignUpScreen() {
                 <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "center", paddingTop: 10, paddingBottom: 10, color: "#fff" }}>
                     Or
                 </Text>
-                <View style={{ flexDirection: 'row', justifyContent: "center", borderRadius: 16 }} >
-                    <TouchableOpacity style={{ padding: 3, borderRadius: 50, margin: 5, backgroundColor: "#fff" }}>
-                        <Image source={require('../assets/icons/google.png')}
-                            style={{ width: 40, height: 40 }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ padding: 3, borderRadius: 50, margin: 5, backgroundColor: "#fff" }}>
-                        <Image source={require('../assets/icons/apple.png')}
-                            style={{ width: 40, height: 40 }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ padding: 3, borderRadius: 50, margin: 5, backgroundColor: "#fff" }}>
-                        <Image source={require('../assets/icons/facebook.png')}
-                            style={{ width: 40, height: 40 }} />
-                    </TouchableOpacity>
-                </View>
                 <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: 20 }}>
                     <Text style={{ fontWeight: "bold", color: "#fff" }}>Already have an account?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')}>

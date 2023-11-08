@@ -74,22 +74,36 @@ const UploadImageScreen = ({route}) => {
   };
 
   const deletePost = async () => {
-    try {
-      const response = await fetch("http://192.168.94.10:4000/deletePost", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    Alert.alert("Are you sure you want to delete this post?",
+    "",
+    [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "Delete",
+        onPress: async () => {
+          try {
+            const response = await fetch("http://192.168.94.10:4000/deletePost", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: postId,
+              }),
+            });
+            const data = await response.json();
+            Alert.alert("Post Deleted!");
+            navigation.navigate("Home");
+          } catch (error) {
+            console.error("Error:", error);
+          }
         },
-        body: JSON.stringify({
-          id: postId,
-        }),
-      });
-      const data = await response.json();
-      Alert.alert("Post Deleted!");
-      navigation.navigate("Home");
-    } catch (error) {
-      console.error("Error:", error);
-    }
+      }
+    ]);
   }
 
   return (

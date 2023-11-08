@@ -145,7 +145,7 @@ export default function HomeScreen() {
     fetchLike();
     fetchComment();
     getSession();
-  }, [isLiked, comment]);
+  }, [isLiked, comment ,userId]);
 
   const handleLogout = () => {
     SignOut(success, unsuccess);

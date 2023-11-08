@@ -74,17 +74,6 @@ export default function LoginScreen() {
         </View>
 
         <Text style={{ fontSize: 16, fontWeight: "bold", textAlign: "center", paddingTop: 10, paddingBottom: 10, color: "#fff" }}>Or</Text>
-        <View style={{ flexDirection: 'row', justifyContent: "center", borderRadius: 16 }}>
-          <TouchableOpacity style={{ padding: 3, borderRadius: 50, margin: 5, backgroundColor: "#fff" }} >
-            <Image source={require('../assets/icons/google.png')} style={{ width: 40, height: 40 }} />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ padding: 3, borderRadius: 50, margin: 5, backgroundColor: "#fff" }} >
-            <Image source={require('../assets/icons/apple.png')} style={{ width: 40, height: 40 }} />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ padding: 3, borderRadius: 50, margin: 5, backgroundColor: "#fff" }} >
-            <Image source={require('../assets/icons/facebook.png')} style={{ width: 40, height: 40 }} />
-          </TouchableOpacity>
-        </View>
         <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: 20 }}>
           <Text style={{ fontWeight: "bold", color: "#fff" }}>
             Don't have an account?
@@ -93,7 +82,6 @@ export default function LoginScreen() {
             <Text style={{ fontWeight: "bold", color: "#F1C40F" }}> Sign Up</Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </View>
 
