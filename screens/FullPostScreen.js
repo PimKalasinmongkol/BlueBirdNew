@@ -14,8 +14,10 @@ import {
   Ionicons,
   FontAwesome,
   MaterialCommunityIcons,
+  FontAwesome5
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import Images from '../createImageImport'
 
 const FullPostScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -176,6 +178,12 @@ const FullPostScreen = ({ route }) => {
         >
           <Ionicons name="arrow-back-outline" size={30} color="#F1C40F" />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('EditPost', {
+          postId: postId,
+          postTitle: allPost[0].post_title
+        })}>
+          <FontAwesome name="edit" size={30} color='#F1C40F' />
+        </TouchableOpacity>
       </View>
       {allPost.map((post) => (
         <Card
@@ -188,7 +196,7 @@ const FullPostScreen = ({ route }) => {
         >
           <Card.Title
             title={post.name}
-            subtitle={post.post_date}
+            subtitle={post.post_date.slice(0 ,-5).replace('T'," ")}
             left={() => (
               <Avatar.Image source={{ uri: post.photoURL }} size={50} />
             )}
@@ -198,7 +206,7 @@ const FullPostScreen = ({ route }) => {
           </Card.Content>
           {post.post_img.length > 0 && (
             <Card.Cover
-              source={{ uri: post.post_img }}
+              source={Images[post.post_img]}
               style={{ width: "100%", height: 200, objectFit: "cover" }}
             />
           )}

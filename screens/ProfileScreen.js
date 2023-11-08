@@ -8,6 +8,7 @@ import { themeColors } from '../theme'
 import { SignOut } from '../hooks/useAuth'
 import { useEffect, useState } from 'react'
 import { Card, Title } from 'react-native-paper';
+import Images from '../createImageImport'
 
 
 export default function ProfileScreen() {
@@ -70,7 +71,7 @@ export default function ProfileScreen() {
         >
             <Card style={{ width: '100%',marginRight: 10 }}> 
                 <Card.Cover
-                    source={{ uri: item.post_img }}
+                    source={Images[item.post_img]}
                     style={{ aspectRatio: 1 ,justifyContent: 'center' ,alignSelf: 'center' }}
                     resizeMode="cover"
                 />

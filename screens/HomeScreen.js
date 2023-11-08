@@ -25,6 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import Images from '../createImageImport'
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -173,12 +174,14 @@ export default function HomeScreen() {
         countComment++;
       }
     });
+    const post_image = Images[item.post_img];
+    console.log(post_image);
     return (
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("FullPost", {
             postId: item.post_id,
-            userId: userId.id
+            userId: userId.id,
           })
         }
       >
@@ -194,7 +197,7 @@ export default function HomeScreen() {
           <Card.Title
             style={{ fontSize: 20 }}
             title={item.name}
-            subtitle={item.post_date}
+            subtitle={item.post_date.slice(0 ,-5).replace('T'," ")}
             left={() => {
               return <Avatar.Image source={{ uri: item.photoURL }} size={50} />;
             }}
@@ -204,10 +207,9 @@ export default function HomeScreen() {
           </Card.Content>
           <View style={{ flexDirection: "row", paddingTop: "2%" }}>
             {item.post_img.length > 0 ? (
-              <Card.Cover
-                source={{ uri: item.post_img }}
+              <Image
+                source={post_image}
                 style={{ width: "100%", height: 500 }}
-                key={item.post_img}
               />
             ) : (
               <View></View>

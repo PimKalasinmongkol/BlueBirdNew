@@ -12,6 +12,7 @@ import SearchScreen from '../screens/SearchScreen'
 import EditScreen from '../screens/EditScreen'
 import ForgotPassScreen from '../screens/ForgotPassScreen';
 import FullPostScreen from '../screens/FullPostScreen';
+import UploadImageScreen from '../screens/EditPostScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ export default function AppNavigation() {
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Forgot" component={ForgotPassScreen} />
       <Stack.Screen name="FullPost" component={FullPostScreen} />
+      <Stack.Screen name="EditPost" component={UploadImageScreen} />
     </Stack.Navigator>
   )
 }
