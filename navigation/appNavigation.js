@@ -8,7 +8,6 @@ import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import ProfileScreen from '../screens/ProfileScreen'
 import PostScreen from '../screens/PostScreen';
-import SearchScreen from '../screens/SearchScreen'
 import EditScreen from '../screens/EditScreen'
 import ForgotPassScreen from '../screens/ForgotPassScreen';
 import FullPostScreen from '../screens/FullPostScreen';
@@ -28,7 +27,6 @@ export default function AppNavigation() {
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Post" component={PostScreen} />
       <Stack.Screen name="Edit" component={EditScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Forgot" component={ForgotPassScreen} />
       <Stack.Screen name="FullPost" component={FullPostScreen} />
       <Stack.Screen name="EditPost" component={UploadImageScreen} />

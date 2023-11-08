@@ -22,7 +22,6 @@ export const SignUp = (account, success, unsuccess) => {
         .post("http://192.168.94.10:4000/createAccount", {
           email: account.email,
           password: account.password,
-
           name: account.name,
         })
         .catch((err) => {
@@ -104,16 +103,17 @@ export const ForgotPass = (email, success, unsuccess) => {
 export const updateEmailAndPassword = (email, password, success, unsuccess) => {
   updateEmail(auth.currentUser, email)
    .then(() => {
-      updatePassword(auth.currentUser, password)
-       .then(() => {
-           const msg = `Update Password in Your ${email} `;
-           success(msg);
-         })
-       .catch((error) => {
-           const msg = `Update Password : ${error}`;
-           console.error(msg);
-           unsuccess(msg);
-         });
+    const msg = `Update Password in Your ${email} `;
+       success(msg);
+  }).catch((error) => {
+    const msg = `Update Password : ${error}`;
+    console.error(msg);
+    unsuccess(msg);
+  });
+  updatePassword(auth.currentUser, password)
+   .then(() => {
+       const msg = `Update Password in Your ${email} `;
+       success(msg);
      })
    .catch((error) => {
        const msg = `Update Password : ${error}`;

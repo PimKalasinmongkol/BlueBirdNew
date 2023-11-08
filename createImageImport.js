@@ -1,4 +1,4 @@
-const context = require.context('./image/upload',false ,/\.(jpg|jpeg|png)$/)
+const context = require.context("./image/upload",false ,/\.(jpg|jpeg|png)$/)
 
 const imageImport = {}
 

@@ -198,7 +198,7 @@ const FullPostScreen = ({ route }) => {
             title={post.name}
             subtitle={post.post_date.slice(0 ,-5).replace('T'," ")}
             left={() => (
-              <Avatar.Image source={{ uri: post.photoURL }} size={50} />
+              <Avatar.Image source={Images[post.photoURL]} size={50} />
             )}
           />
           <Card.Content>

@@ -95,7 +95,7 @@ export default function ProfileScreen() {
 
             <View style={{ flex: 10 }}>
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <Image source={{uri : userImg}}
+                    <Image source={Images[userImg]}
                         style={{ width: 150, height: 150, borderRadius: 100 }} />
                     <Text style={{ fontWeight: "bold", padding: 20, fontSize: 20 }}>{name}</Text>
                     <TouchableOpacity style={{flexDirection:'row',backgroundColor:"#F1C40F",padding:5,borderRadius:10,}}
@@ -122,11 +122,6 @@ export default function ProfileScreen() {
                 <TouchableOpacity style={styles.button_nav}
                     onPress={() => navigation.navigate('Home')}>
                     <FontAwesome name="home" size={26} color="#F1C40F" />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button_nav}
-                    onPress={() => navigation.navigate('Search')}>
-                    <FontAwesome name="search" size={26} color="#F1C40F" />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.button_nav}

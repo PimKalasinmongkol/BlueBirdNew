@@ -8,7 +8,7 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { Ionicons, FontAwesome ,MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 
@@ -73,6 +73,25 @@ const UploadImageScreen = ({route}) => {
     }
   };
 
+  const deletePost = async () => {
+    try {
+      const response = await fetch("http://192.168.94.10:4000/deletePost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: postId,
+        }),
+      });
+      const data = await response.json();
+      Alert.alert("Post Deleted!");
+      navigation.navigate("Home");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -96,6 +115,12 @@ const UploadImageScreen = ({route}) => {
           onPress={() => navigation.navigate("Home")}
         >
           <Ionicons name="arrow-back-outline" size={30} color="#F1C40F" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{}}
+          onPress={deletePost}
+        >
+          <MaterialCommunityIcons name="delete" size={30} color="#F1C40F" />
         </TouchableOpacity>
       </View>
       {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
@@ -147,13 +172,6 @@ const UploadImageScreen = ({route}) => {
           onPress={() => navigation.navigate("Home")}
           >
           <FontAwesome name="home" size={26} color="#F1C40F" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button_nav}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <FontAwesome name="search" size={26} color="#F1C40F" />
         </TouchableOpacity>
 
         <TouchableOpacity

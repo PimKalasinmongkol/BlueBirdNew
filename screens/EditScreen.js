@@ -16,12 +16,15 @@ import { AntDesign } from "@expo/vector-icons";
 import { themeColors } from "../theme";
 import { SignOut } from "../hooks/useAuth";
 import { updateEmailAndPassword } from "../hooks/useAuth";
+import * as ImagePicker from "expo-image-picker";
+import Images from '../createImageImport'
 
 export default function EditScreen() {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [image ,setImage] = useState(null);
   const [items, setItems] = useState({});
   const [isEdited , setIsEdited] = useState(false);
 
@@ -66,22 +69,58 @@ export default function EditScreen() {
     setEmail(data[0].email);
     setPassword(data[0].password);
     setUserId(data[0].id);
+    setImage(data[0].photoURL);
+  };
+
+  const selectImageAndUpload = async () => {
+    // Ensure permission for accessing the library
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permissionResult.granted) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true, // Optional, depending on your needs
+      aspect: [1, 1], // Optional, aspect ratio
+      quality: 1, // Optional, quality of the image
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+      const uriParts = result.uri.split("/");
+      const fileName = uriParts[uriParts.length - 1];
+
+      Alert.alert("Image Selected!", fileName);
+    }
   };
 
   const SendDataEditedUser = async () => {
+    const formData = new FormData();
+    const uriParts = image.split("/");
+    const fileName = uriParts[uriParts.length - 1];
+
+    formData.append("image", {
+      uri: image,
+      type: "image/jpeg",
+      name: fileName,
+    });
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+
     try {
         const response = await fetch(
-          `http://192.168.94.10:4000/editUser/${userId}`,
+          `http://192.168.94.10:4000/editUser`,
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             },
-            body: JSON.stringify({
-              name: name,
-              email: email,
-              password: password,
-            }),
+            body: formData
           }
         );
         const data = await response.json();
@@ -120,7 +159,7 @@ export default function EditScreen() {
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
-              source={require("../assets/pim.jpg")}
+              source={Images[image]}
               style={{ width: 150, height: 150, borderRadius: 100 }}
             />
             <TouchableOpacity
@@ -133,6 +172,7 @@ export default function EditScreen() {
                 alignItems: "center",
                 marginLeft: 80,
               }}
+              onPress={selectImageAndUpload}
             >
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>Upload</Text>
             </TouchableOpacity>
@@ -199,13 +239,6 @@ export default function EditScreen() {
           onPress={() => navigation.navigate("Home")}
         >
           <FontAwesome name="home" size={26} color="#F1C40F" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button_nav}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <FontAwesome name="search" size={26} color="#F1C40F" />
         </TouchableOpacity>
 
         <TouchableOpacity

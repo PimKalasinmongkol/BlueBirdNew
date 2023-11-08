@@ -174,8 +174,6 @@ export default function HomeScreen() {
         countComment++;
       }
     });
-    const post_image = Images[item.post_img];
-    console.log(post_image);
     return (
       <TouchableOpacity
         onPress={() =>
@@ -199,7 +197,7 @@ export default function HomeScreen() {
             title={item.name}
             subtitle={item.post_date.slice(0 ,-5).replace('T'," ")}
             left={() => {
-              return <Avatar.Image source={{ uri: item.photoURL }} size={50} />;
+              return <Avatar.Image source={Images[item.photoURL]} size={50} />;
             }}
           />
           <Card.Content>
@@ -208,7 +206,7 @@ export default function HomeScreen() {
           <View style={{ flexDirection: "row", paddingTop: "2%" }}>
             {item.post_img.length > 0 ? (
               <Image
-                source={post_image}
+                source={Images[item.post_img]}
                 style={{ width: "100%", height: 500 }}
               />
             ) : (
@@ -371,14 +369,6 @@ export default function HomeScreen() {
         >
           <FontAwesome name="home" size={26} color="#F1C40F" />
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button_nav}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <FontAwesome name="search" size={26} color="#F1C40F" />
-        </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.button_nav}
           onPress={() => navigation.navigate("Post")}

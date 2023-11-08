@@ -157,13 +157,6 @@ export default function PostScreen() {
 
         <TouchableOpacity
           style={styles.button_nav}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <FontAwesome name="search" size={26} color="#F1C40F" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button_nav}
           onPress={() => navigation.navigate("Post")}
           >
           <FontAwesome name="file-photo-o" size={26} color="#F1C40F" />
